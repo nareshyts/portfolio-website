@@ -27,9 +27,10 @@ app.post('/api/send-email', (req, res) => {
 
     const transporter = nodemailer.createTransport({
         host: 'smtp.gmail.com',
-        port: 587,
+        port: 465,
+        secure: true,
         auth: {
-            user: process.env.FOLIO_EMAIL,
+            user: 'flashxforge@gmail.com',
             pass: process.env.FOLIO_PASSWORD,
         },
     });
@@ -39,12 +40,12 @@ app.post('/api/send-email', (req, res) => {
         .then(() => {
             transporter
                 .sendMail({
-                    from: `"${name}" <henryheffernan.folio@gmail.com>`, // sender address
-                    to: 'henryheffernan@gmail.com, henryheffernan.folio@gmail.com', // list of receivers
+                    from: `"${name}" <flashxforge@gmail.com>`,
+                    to: 'sethjyotiranjan1@gmail.com',
                     subject: `${name} <${email}> ${
                         company ? `from ${company}` : ''
-                    } submitted a contact form`, // Subject line
-                    text: `${message}`, // plain text body
+                    } submitted a contact form`,
+                    text: `${message}`,
                 })
                 .then((info) => {
                     console.log({ info });
