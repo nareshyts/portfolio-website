@@ -9,11 +9,12 @@ const compression = require('compression');
 const app = express();
 const port = 8080;
 
+// CORS MUST be first before any other middleware
 app.use(cors());
 app.use(compression());
 
-// Have Node serve the files for our built React app
-app.use(express.static(path.resolve(__dirname, '../public')));
+// Handle preflight requests explicitly
+app.options('/api/send-email', cors());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -53,12 +54,12 @@ app.post('/api/send-email', (req, res) => {
                 })
                 .catch((e) => {
                     console.error(e);
-                    res.status(500).send(e);
+                    res.status(500).json({ message: 'error', error: e.message });
                 });
         })
         .catch((e) => {
             console.error(e);
-            res.status(500).send(e);
+            res.status(500).json({ message: 'error', error: e.message });
         });
 });
 
